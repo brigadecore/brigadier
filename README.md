@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # Contributing
 
@@ -12,3 +13,53 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+||||||| merged common ancestors
+=======
+# Brigadier: The JS library for Brigade
+
+Brigadier is the events and jobs library for [Brigade](https://brigade.sh).
+
+This is the core of the Brigadier library, but the Kubernetes runtime is part of Brigade itself.
+To run a `brigade.js` file in Kubernetes, it will need to be executed within Brigade.
+
+## What is it good for?
+
+This library is useful for:
+
+- testing `brigade.js` files
+- extending Brigade's worker
+- supporting code completion in tooling
+- implementing alternative Brigade backends
+
+Because there is no `JobRunner` implementation, executing `job.run()` is a no-op unless you override the appropriate methods on the `Job` class.
+
+## Installation
+
+Install with Yarn, NPM, etc.:
+
+```console
+$ yarn add @brigadecore/brigadier
+```
+
+While this library is fairly stable, it is considered best to match the version of this library
+to the version of Brigade that you are using.
+
+
+## Usage
+
+The API is the same here as in [Brigade's API](https://github.com/Azure/brigade/blob/master/docs/topics/javascript.md):
+
+```javascript
+const {events, Job} = require("@brigadecore/brigadier");
+
+events.on("push", (e, p) => {
+    console.log("Got a push event");
+    const j = new Job("example", "alpine:3.7");
+    j.run().then((res) => {
+        console.log(`result: ${ res.toString() } `)
+    });
+});
+```
+
+To learn more, visit the [official scripting guide](https://github.com/Azure/brigade/blob/master/docs/topics/scripting.md).
+>>>>>>> docs(README): update README
