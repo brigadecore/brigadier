@@ -1,0 +1,31 @@
+{
+  "name": "@brigadecore/brigadier",
+  "version": "0.1.0",
+  "description": "Brigade library for pipelines and events",
+  "main": "dist/index.js",
+  "author": "M Butcher",
+  "license": "MIT",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "mocha --compilers ts:ts-node/register --recursive ./test/**/*.ts"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.1",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^10.3.0",
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2",
+    "prettier": "^1.9.1",
+    "rimraf": "^2.6.2",
+    "ts-node": "^7.0.0",
+    "typedoc": "^0.11.0",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^0.1.3",
+    "child-process-promise": "^2.2.1",
+    "pretty-error": "^2.1.1",
+    "ulid": "^0.2.0"
+  }
+}
