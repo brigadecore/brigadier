@@ -6,6 +6,10 @@
   "types": "out/index.d.ts",
   "author": "Azure Cloud Native Team",
   "license": "MIT",
+  "homepage": "https://github.com/Azure/brigadier",
+  "bugs": {
+    "url": "https://github.com/Azure/brigadier/issues"
+  },
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
