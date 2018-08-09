@@ -22,7 +22,15 @@ Brigadier is the events and jobs library for [Brigade](https://brigade.sh).
 This is the core of the Brigadier library, but the Kubernetes runtime is part of Brigade itself.
 To run a `brigade.js` file in Kubernetes, it will need to be executed within Brigade.
 
-## What is it good for?
+## What is Brigade?
+
+Brigade is an event-driven serverless pipeline tool for Kubernetes. Use it to build CI/CD tools, ETL applications, big data chains, or for machine learning processing.
+
+With Brigade, you can describe your pipeline in JavaScript, but each stage of the pipeline can be a completely stand-alone Docker container, written in whatever language you choose (including JS).
+
+For examples of Brigade in action, visit [https://brigade.sh](https://brigade.sh).
+
+## What is this library good for?
 
 This library is useful for:
 
@@ -32,6 +40,8 @@ This library is useful for:
 - implementing alternative Brigade backends
 
 Because there is no `JobRunner` implementation, executing `job.run()` is a no-op unless you override the appropriate methods on the `Job` class.
+
+For an example of this library in action, see [brigtest](https://github.com/technosophos/brigtest).
 
 ## Installation
 
@@ -43,7 +53,6 @@ $ yarn add @brigadecore/brigadier
 
 While this library is fairly stable, it is considered best to match the version of this library
 to the version of Brigade that you are using.
-
 
 ## Usage
 
