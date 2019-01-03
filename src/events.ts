@@ -38,19 +38,19 @@ export class BrigadeEvent {
   /**
    * buildID is the unique ID for this build.
    */
-  buildID: string = "";
+  buildID?: string;
   /**
    * workerID is the ID of the worker responsible for handling this event.
    */
-  workerID: string = "";
+  workerID?: string;
   /**
    * type is the event type ("push", "pull_request")
    */
-  type: string = "";
+  type: string = "unknown";
   /**
    * provider is the thing that triggered the event ("github", "vsts")
    */
-  provider: string = "";
+  provider?: string;
   /**
    * revision describes a vcs revision.
    */
@@ -102,7 +102,7 @@ export class Cause {
   /**
    * The event that was the cause.
    */
-  event: BrigadeEvent = new BrigadeEvent();
+  event?: BrigadeEvent;
   /**
    * The reason this event has caused a condition. (Typically, an error object)
    */
@@ -158,6 +158,26 @@ export interface KubernetesConfig {
   vcsSidecar: string;
 
   /**
+   * vcsSidecarResourcesLimitsCPU is the cpu limits name for the sidecar container.
+   */
+  vcsSidecarResourcesLimitsCPU: string;
+
+  /**
+   * vcsSidecarResourcesLimitsMemory is the memory limits name for the sidecar container.
+   */
+  vcsSidecarResourcesLimitsMemory: string;
+
+  /**
+   * vcsSidecarResourcesRequestsCPU is the cpu requests name for the sidecar container.
+   */
+  vcsSidecarResourcesRequestsCPU: string;
+
+  /**
+   * vcsSidecarResourcesRequestsMemory is the memory requests name for the sidecar container.
+   */
+  vcsSidecarResourcesRequestsMemory: string;
+
+  /**
    *  buildStorageSize is the size of the build shared storage space used by the jobs
    */
   buildStorageSize: string;
@@ -180,11 +200,11 @@ export class Project {
   /**
    * id is the unique ID of the project
    */
-  id: string = "";
+  id?: string;
   /**
    * name is the project name.
    */
-  name: string = "";
+  name?: string;
   /**
    * repo describes the VCS where source for this project can be obtained.
    */
@@ -196,7 +216,7 @@ export class Project {
   /*
      * secrets is a map of secret names to secret values.
      */
-  secrets?: { [key: string]: string };
+  secrets: { [key: string]: string } = {};
 
   /**
    * allowPrivilegedJobs enables privileged mode.
@@ -213,6 +233,8 @@ export class Project {
  * EventHandler is an event handler function.
  *
  * An event handler will always receive an event and a project.
+ * 
+ * The EventRegistry.on() method should be supplied a function conformant to EventHandler.
  */
 export type EventHandler = (e: BrigadeEvent, proj?: Project) => void;
 
@@ -240,5 +262,18 @@ export class EventRegistry extends EventEmitter {
    */
   public fire(e: BrigadeEvent, proj: Project) {
     this.emit(e.type, e, proj);
+  }
+
+  /**
+   * Handle a named event using the given EventHandler.
+   * 
+   * While we cannot revise the type that the Node events library takes for callbacks, Brigade will always
+   * supply two arguments to the callback, as described in the EventHandler type.
+   * 
+   * @param eventName The name of the event
+   * @param cb A callback of the format described in type EventHandler
+   */
+  public on(eventName: string | symbol, cb: ((...args: any[]) => void)): this {
+    return super.on(eventName, cb);
   }
 }

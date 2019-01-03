@@ -93,7 +93,7 @@ export class MockBuildStorage {
     project: Project,
     size?: string
   ): Promise<string> {
-    return Promise.resolve(e.workerID);
+    return Promise.resolve(e.workerID || "unknown");
   }
   public destroy(): Promise<boolean> {
     return Promise.resolve(true);

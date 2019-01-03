@@ -7,9 +7,7 @@
 
 /** */
 
-// TODO: See if we can get rid of this, which is the only k8s dependency in
-// the entire source tree.
-import { V1EnvVarSource } from "@kubernetes/client-node/api";
+import { V1EnvVarSource } from "@kubernetes/client-node/dist/api";
 
 /**
  * The default shell for the job.
@@ -137,7 +135,7 @@ export class JobDockerMount {
 }
 
 /**
- * JObResourceRequest represents request of the resources
+ * JobResourceRequest represents request of the resources
  */
 export class JobResourceRequest {
   /** cpu requests */
@@ -147,11 +145,23 @@ export class JobResourceRequest {
 }
 
 /**
+ * JobResourceLimit represents limit of the resources
+ */
+export class JobResourceLimit {
+  /** cpu limits */
+  public cpu?: string;
+  /** memory limits */
+  public memory?: string;
+}
+
+/**
  * Job represents a single job, which is composed of several closely related sequential tasks.
  * Jobs must have names. Every job also has an associated image, which references
  * the Docker container to be run.
  * */
 export abstract class Job {
+  public static readonly MAX_JOB_NAME_LENGTH = 36;
+
   /** name of the job*/
   public name: string;
   /** shell that will be used by default in this job*/
@@ -200,6 +210,9 @@ export abstract class Job {
   /** Set the resource requests for the containers */
   public resourceRequests: JobResourceRequest;
 
+  /** Set the resource limits for the containers */
+  public resourceLimits: JobResourceLimit;
+
   /**
    * host expresses expectations about the host the job will run on.
    */
@@ -222,7 +235,7 @@ export abstract class Job {
   /**
    * pod annotations for the job
    */
-  public annotations: { [key: string]: string; } = {};
+  public annotations: { [key: string]: string } = {};
 
   /** _podName is set by the runtime. It is the name of the pod.*/
   protected _podName: string = "";
@@ -231,6 +244,11 @@ export abstract class Job {
   get podName(): string {
     return this._podName;
   }
+
+  /** streamLogs controls whether logs from the job Pod will be streamed to output
+   * this is similar to using `kubectl logs PODNAME -f`
+   */
+  public streamLogs : boolean = false;
 
   /** Create a new Job
    * name is the name of the job.
@@ -241,16 +259,17 @@ export abstract class Job {
     name: string,
     image?: string,
     tasks?: string[],
-    imageForcePull?: boolean
+    imageForcePull: boolean = false
   ) {
     if (!jobNameIsValid(name)) {
       throw new Error(
-        "job name must be letters, numbers, and '-', and must not start or end with '-'"
+        "job name must be lowercase letters, numbers, and '-', and must not start or end with '-', having max length " +
+          Job.MAX_JOB_NAME_LENGTH
       );
     }
     this.name = name.toLocaleLowerCase();
     this.image = image || "";
-    this.imageForcePull = imageForcePull || false;
+    this.imageForcePull = imageForcePull;
     this.tasks = tasks || [];
     this.args = [];
     this.env = {};
@@ -259,6 +278,7 @@ export abstract class Job {
     this.docker = new JobDockerMount();
     this.host = new JobHost();
     this.resourceRequests = new JobResourceRequest();
+    this.resourceLimits = new JobResourceLimit();
   }
 
   /** run executes the job and then */
@@ -272,5 +292,8 @@ export abstract class Job {
  * jobNameIsValid checks the validity of a job's name.
  */
 export function jobNameIsValid(name: string): boolean {
-  return /^(([a-z0-9][-a-z0-9.]*)?[a-z0-9])+$/.test(name);
+  return (
+    name.length <= Job.MAX_JOB_NAME_LENGTH &&
+    /^(([a-z0-9][-a-z0-9.]*)?[a-z0-9])+$/.test(name)
+  );
 }
