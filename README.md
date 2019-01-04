@@ -35,7 +35,7 @@ to the version of Brigade that you are using.
 The API is the same here as in [Brigade's API](https://github.com/Azure/brigade/blob/master/docs/topics/javascript.md):
 
 ```javascript
-const {events, Job} = require("@brigadecore/brigadier");
+const {events, Job} = require("@azure/brigadier");
 
 events.on("push", (e, p) => {
     console.log("Got a push event");
