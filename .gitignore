@@ -1,2 +1,8 @@
 node_modules/
 out/
+
+# in order to have pretty import paths, the compiled output needs to be in the root of the package
+
+*.js
+*.d.ts
+*.js.map
