@@ -18,10 +18,12 @@ Because there is no `JobRunner` implementation, executing `job.run()` is a no-op
 
 ## Installation
 
+[![NPM](https://nodei.co/npm/@azure/brigadier.png)](https://www.npmjs.com/package/@azure/brigadier)
+
 Install with Yarn, NPM, etc.:
 
 ```console
-$ yarn add @brigadecore/brigadier
+$ yarn add @azure/brigadier
 ```
 
 While this library is fairly stable, it is considered best to match the version of this library
