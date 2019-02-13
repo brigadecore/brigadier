@@ -120,6 +120,13 @@ describe("job", function() {
           assert.equal(j.serviceAccount, "svcAccount");
         });
       });
+      context("when serviceAccountRegex is supplied", function() {
+        it("sets serviceAccountRegex property", function() {
+          j = new mock.MockJob("my-name", "alpine:3.4", [], true);
+          j.serviceAccountRegex = "svcAccountRegex";
+          assert.equal(j.serviceAccountRegex, "svcAccountRegex");
+        });
+      });
     });
     describe("#podName", function() {
       beforeEach(function() {

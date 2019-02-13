@@ -207,6 +207,9 @@ export abstract class Job {
    */
   public serviceAccount?: string;
 
+  /** The regex to validate project service account */
+  public serviceAccountRegex?: string;
+
   /** Set the resource requests for the containers */
   public resourceRequests: JobResourceRequest;
 
