@@ -1,6 +1,6 @@
 # Contributing to Brigadier
 
-Brigadier is part of the [Brigade Core](https://github.com/Azure/brigade). Make sure you test your changes with Brigade.
+Brigadier is part of the [Brigade Core](https://github.com/brigadecore/brigade). Make sure you test your changes with Brigade.
 
 ## Publishing Brigadier
 

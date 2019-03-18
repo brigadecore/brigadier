@@ -1,14 +1,14 @@
 {
-  "name": "@azure/brigadier",
+  "name": "@brigadecore/brigadier",
   "version": "0.4.0",
   "description": "Brigade library for pipelines and events",
   "main": "out/index.js",
   "types": "out/index.d.ts",
-  "author": "Azure Cloud Native Team",
+  "author": "Brigade Core Maintainers",
   "license": "MIT",
-  "homepage": "https://github.com/Azure/brigadier",
+  "homepage": "https://github.com/brigadecore/brigadier",
   "bugs": {
-    "url": "https://github.com/Azure/brigadier/issues"
+    "url": "https://github.com/brigadecore/brigadier/issues"
   },
   "scripts": {
     "compile": "tsc -p ./",

@@ -203,7 +203,7 @@ export abstract class Job {
    * Different Brigade worker implementations may choose to honor or ignore this
    * for security or configurability reasons.
    *
-   * See https://github.com/Azure/brigade/issues/251
+   * See https://github.com/brigadecore/brigade/issues/251
    */
   public serviceAccount?: string;
 
