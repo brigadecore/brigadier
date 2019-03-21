@@ -5,17 +5,17 @@ import { Result, Job } from "../src/job";
 
 export function mockProject(): Project {
   return {
-    id: "brigade-c0ff33544b459e6ac0ffee",
-    name: "deis/empty-testbed",
+    id: "brigade-4897c99315be5d2a2403ea33bdcb24f8116dc69613d5917d879d5f",
+    name: "brigadecore/empty-testbed",
     repo: {
-      name: "deis/empty-testbed",
-      cloneURL: "https://github.com/deis/empty-testbed.git",
+      name: "brigadecore/empty-testbed",
+      cloneURL: "https://github.com/brigadecore/empty-testbed.git",
       token: "supersecret",
       initGitSubmodules: false
     },
     kubernetes: {
       namespace: "default",
-      vcsSidecar: "deis/git-sidecar:latest",
+      vcsSidecar: "brigadecore/git-sidecar:latest",
       buildStorageSize: "50Mi"
     },
     allowPrivilegedJobs: true,
