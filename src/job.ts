@@ -185,7 +185,7 @@ export abstract class Job {
   /** Path to mount as the base path for executable code in the container.*/
   public mountPath: string = "/src";
 
-  /** Set the max time to wait for this job to complete.*/
+  /** Set the max time in miliseconds to wait for this job to complete.*/
   public timeout: number = defaultTimeout;
 
   /** Fetch the source repo. Default: true*/
