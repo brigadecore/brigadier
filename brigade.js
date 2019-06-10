@@ -1,10 +1,13 @@
 // TODO: how to require local version of library?
-const { events, Job } = require("brigadier")
+const { events, Job, Group } = require("brigadier")
 
 const projectName = "brigadier"
 
 events.on("exec", (e, p) => {
-  return build(e, p).run();
+  return Group.runAll([
+    build(),
+    test(),
+  ]);
 })
 
 events.on("check_suite:requested", runSuite)
@@ -18,11 +21,23 @@ function build(e, project) {
 
   build.tasks = [
     "cd /src",
-    "npm install",
-    "npm run compile",
+    "yarn install",
+    "yarn run compile"
   ];
 
   return build;
+}
+
+function test(e, project) {
+  var test = new Job(`${projectName}-test`, "node:alpine");
+
+  test.tasks = [
+    "cd /src",
+    "yarn install",
+    "yarn run test"
+  ];
+
+  return test;
 }
 
 // Check represents a simple Check run,
@@ -37,7 +52,8 @@ class Check {
 // Checks represent a list of Checks that by default are run in the form
 // of a check suite, but may be run individually
 Checks = {
-  "build": new Check("build", build)
+  "build": new Check("build", build),
+  "test": new Check("test", test)
 };
 
 // runCheck is the default function invoked on a check_run:* event
