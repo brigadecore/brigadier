@@ -1,7 +1,6 @@
-// TODO: how to require local version of library?
-const { events, Job, Group } = require("brigadier")
+const { events, Job, Group } = require("./out/index.js");
 
-const projectName = "brigadier"
+const projectName = "brigadier";
 
 events.on("exec", (e, p) => {
   return Group.runAll([
