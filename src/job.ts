@@ -7,7 +7,7 @@
 
 /** */
 
-import { V1EnvVarSource } from "@kubernetes/client-node/dist/api";
+import { V1EnvVarSource, V1VolumeMount, V1Volume } from "@kubernetes/client-node/dist/api";
 
 /**
  * The default shell for the job.
@@ -155,6 +155,32 @@ export class JobResourceLimit {
 }
 
 /**
+ * EXPERIMENTAL: allow mounting volumes to the job runner pod.
+ * JobVolumeConfig represents a Kubernetes Volume and VolumeMount pair.
+ * The Volume is mounted in the job pod at the path defined by the VolumeMount.
+ * The name for the mount and volume must match. 
+ * For more info, see https://kubernetes.io/docs/concepts/storage/volumes/
+ * 
+ * For a simple shared volume between all the containers of a job, use JobStorage.
+ */
+export class JobVolumeConfig {
+  /** mounting config of the volume */
+  public mount?: V1VolumeMount;
+  /** volume that will be mounted at the mount location */
+  public volume?: V1Volume;
+
+  /**
+   * 
+   * @param m represents the volume mount
+   * @param v represents the volume
+   */
+  constructor(m: V1VolumeMount, v: V1Volume) {
+    this.mount = m;
+    this.volume = v;
+  }
+}
+
+/**
  * Job represents a single job, which is composed of several closely related sequential tasks.
  * Jobs must have names. Every job also has an associated image, which references
  * the Docker container to be run.
@@ -228,6 +254,10 @@ export abstract class Job {
   public storage: JobStorage;
 
   /**
+   * volume configuration preferences for current job.
+   */
+  public volumeConfig: JobVolumeConfig[];
+  /**
    * docker controls the job's preferences on mounting the host's docker daemon.
    */
   public docker: JobDockerMount;
@@ -248,7 +278,7 @@ export abstract class Job {
   /** streamLogs controls whether logs from the job Pod will be streamed to output
    * this is similar to using `kubectl logs PODNAME -f`
    */
-  public streamLogs : boolean = false;
+  public streamLogs: boolean = false;
 
   /** Create a new Job
    * name is the name of the job.
@@ -264,7 +294,7 @@ export abstract class Job {
     if (!jobNameIsValid(name)) {
       throw new Error(
         "job name must be lowercase letters, numbers, and '-', and must not start or end with '-', having max length " +
-          Job.MAX_JOB_NAME_LENGTH
+        Job.MAX_JOB_NAME_LENGTH
       );
     }
     this.name = name.toLocaleLowerCase();
@@ -279,6 +309,7 @@ export abstract class Job {
     this.host = new JobHost();
     this.resourceRequests = new JobResourceRequest();
     this.resourceLimits = new JobResourceLimit();
+    this.volumeConfig = [];
   }
 
   /** run executes the job and then */
