@@ -5,7 +5,7 @@
   "main": "out/index.js",
   "types": "out/index.d.ts",
   "author": "Brigade Core Maintainers",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/brigadecore/brigadier",
   "bugs": {
     "url": "https://github.com/brigadecore/brigadier/issues"
