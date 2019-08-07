@@ -7,7 +7,7 @@
 
 /** */
 
-import { V1EnvVarSource } from "@kubernetes/client-node/dist/api";
+import { V1EnvVarSource, V1VolumeMount, V1Volume } from "@kubernetes/client-node/dist/api";
 
 /**
  * The default shell for the job.
@@ -228,6 +228,28 @@ export abstract class Job {
   public storage: JobStorage;
 
   /**
+   * EXPERIMENTAL: define volumes for the job.
+   * The property is defined as a list of Kubernetes volumes, and supports all Kubernetes volume types.
+   * Use the job's volumeMounts property to mount a volume defined to a path in the job's container.
+   * The names for the volume and the desired volume mount must match. 
+   * For more info, see https://kubernetes.io/docs/concepts/storage/volumes/
+   * 
+   * For a simple shared volume between all the containers of a job, use JobStorage.
+   */
+  public volumes: V1Volume[];
+
+  /**
+   * EXPERIMENTAL: define volume mounts for the job.
+   * The property is defined as a list of Kubernetes volume mounts.
+   * Use the job's volumes property to define volumes.
+   * The names for the volume and the desired volume mount must match.
+   * For more info, see https://kubernetes.io/docs/concepts/storage/volumes/
+   * 
+   * For a simple shared volume between all the containers of a job, use JobStorage.
+   */
+  public volumeMounts: V1VolumeMount[];
+
+  /**
    * docker controls the job's preferences on mounting the host's docker daemon.
    */
   public docker: JobDockerMount;
@@ -248,7 +270,7 @@ export abstract class Job {
   /** streamLogs controls whether logs from the job Pod will be streamed to output
    * this is similar to using `kubectl logs PODNAME -f`
    */
-  public streamLogs : boolean = false;
+  public streamLogs: boolean = false;
 
   /** Create a new Job
    * name is the name of the job.
@@ -264,7 +286,7 @@ export abstract class Job {
     if (!jobNameIsValid(name)) {
       throw new Error(
         "job name must be lowercase letters, numbers, and '-', and must not start or end with '-', having max length " +
-          Job.MAX_JOB_NAME_LENGTH
+        Job.MAX_JOB_NAME_LENGTH
       );
     }
     this.name = name.toLocaleLowerCase();
@@ -279,6 +301,8 @@ export abstract class Job {
     this.host = new JobHost();
     this.resourceRequests = new JobResourceRequest();
     this.resourceLimits = new JobResourceLimit();
+    this.volumes = [];
+    this.volumeMounts = [];
   }
 
   /** run executes the job and then */
