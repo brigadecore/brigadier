@@ -1,6 +1,6 @@
 {
   "name": "@brigadecore/brigadier",
-  "version": "0.8.0",
+  "version": "placeholder",
   "description": "Brigade library for pipelines and events",
   "main": "out/index.js",
   "types": "out/index.d.ts",
