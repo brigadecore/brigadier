@@ -37,7 +37,11 @@ function publish(project, version) {
     // the correct secret ONLY for this one job, we create .npmrc right here,
     // just in time.
     publish.tasks.push("echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc");
-    publish.tasks.push("sed -i 's/^  \"version\":.*/  \"version\": \"" + version + "\",/' package.json");
+    publish.tasks.push("apt-get update");
+    publish.tasks.push("apt-get install -y jq");
+    publish.tasks.push("cat package.json | jq '.version |= \"" + version + "\"' > package.json.tmp");
+    publish.tasks.push("rm package.json")
+    publish.tasks.push("mv package.json.tmp package.json")
     publish.tasks.push("npm publish");
     return publish;
 }
