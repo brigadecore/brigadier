@@ -253,7 +253,7 @@ export class EventRegistry extends EventEmitter {
    */
   constructor() {
     super();
-    this.on("ping", (e: BrigadeEvent, p: Project) => {
+    this.on("ping", (e: BrigadeEvent, p?: Project) => {
       console.log("ping");
     });
   }
