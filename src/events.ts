@@ -253,7 +253,7 @@ export class EventRegistry extends EventEmitter {
    */
   constructor() {
     super();
-    this.on("ping", (e: BrigadeEvent, p: Project) => {
+    this.on("ping", (e: BrigadeEvent, p?: Project) => {
       console.log("ping");
     });
   }
@@ -279,7 +279,7 @@ export class EventRegistry extends EventEmitter {
    * @param eventName The name of the event
    * @param cb A callback of the format described in type EventHandler
    */
-  public on(eventName: string | symbol, cb: ((...args: any[]) => void)): this {
+  public on(eventName: string | symbol, cb: EventHandler): this {
     return super.on(eventName, cb);
   }
 }

@@ -28,7 +28,7 @@ describe("events", function() {
     });
     describe("#on", function() {
       it("registers an event handler", function() {
-        er.on("my-event", (e: events.BrigadeEvent, p: events.Project) => {});
+        er.on("my-event", (e: events.BrigadeEvent, p?: events.Project) => {});
         assert.isTrue(er.has("my-event"));
       });
     });
@@ -39,7 +39,7 @@ describe("events", function() {
         let myEvent = mock.mockEvent();
         let myProj = mock.mockProject();
         myEvent.type = ename;
-        er.on(ename, (e: events.BrigadeEvent, p: events.Project) => {
+        er.on(ename, (e: events.BrigadeEvent, p?: events.Project) => {
           fired = true;
         });
         er.fire(myEvent, myProj);
