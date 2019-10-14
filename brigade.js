@@ -56,7 +56,9 @@ events.on("push", (e, p) => {
     }
 });
 
-events.on("exec", runSuite);
+events.on("exec", (e, p) => {
+  return build().run();
+});
 events.on("check_suite:requested", runSuite);
 events.on("check_suite:rerequested", runSuite);
 events.on("issue_comment:created", (e, p) => Check.handleIssueComment(e, p, runSuite));
