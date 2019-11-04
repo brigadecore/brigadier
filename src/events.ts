@@ -138,7 +138,11 @@ export interface Repository {
    * sshKey the SSH key to use for ssh:// or git+ssh:// protocols
    */
   sshKey?: string;
-
+  /**
+   * sshCert the SSH certificate to use for ssh:// or git+ssh:// protocols
+   *  more details could be found at https://github.blog/2019-08-14-ssh-certificate-authentication-for-github-enterprise-cloud/
+   */
+  sshCert?: string;
   /**
    * token is the OAuth2 token for Git interactions over HTTPS
    */
