@@ -32,7 +32,7 @@ to the version of Brigade that you are using.
 
 ## Usage
 
-The API is the same here as in [Brigade's API](https://github.com/brigadecore/brigade/blob/master/docs/topics/javascript.md):
+The API is the same here as in [Brigade's API](https://docs.brigade.sh/topics/javascript):
 
 ```javascript
 const {events, Job} = require("@brigadecore/brigadier");
@@ -46,7 +46,7 @@ events.on("push", (e, p) => {
 });
 ```
 
-To learn more, visit the [official scripting guide](https://github.com/brigadecore/brigade/blob/master/docs/topics/scripting.md).
+To learn more, visit the [official scripting guide](https://docs.brigade.sh/topics/scripting).
 
 # Contributing
 
