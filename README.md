@@ -1,3 +1,9 @@
+> Note: This is the JS library for Brigade v1. For the Brigade v2-compatible
+> Brigadier JS/TS library, see the corresponding
+> [v2/brigadier](https://github.com/brigadecore/brigade/tree/v2/v2/brigadier)
+> directory in the main Brigade repository, or seek out the v2.x releases on
+> [Brigadier's npm site](https://www.npmjs.com/package/@brigadecore/brigadier).
+
 # Brigadier: The JS library for Brigade
 
 Brigadier is the events and jobs library for [Brigade](https://brigade.sh).
