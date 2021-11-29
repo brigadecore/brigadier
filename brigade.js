@@ -2,7 +2,7 @@ const { events, Job } = require("@brigadecore/brigadier")
 const { Check } = require("@brigadecore/brigade-utils");
 
 const projectName = "brigadier"
-const nodeImage = "node:12.3.1-stretch"
+const nodeImage = "node:12.22.7-bullseye"
 const releaseTagRegex = /^refs\/tags\/v([0-9]+(?:\.[0-9]+)*(?:\-.+)?)$/;
 
 function build() {
@@ -12,7 +12,19 @@ function build() {
         "cd /src",
         "yarn install",
         "yarn compile",
-        "yarn test",
+        "yarn test"
+    ];
+
+    return build;
+}
+
+function audit() {
+    var build = new Job(`${projectName}-audit`, nodeImage);
+
+    build.tasks = [
+        "cd /src",
+        "yarn install",
+        "yarn compile",
         "yarn audit"
     ];
 
@@ -20,8 +32,23 @@ function build() {
 }
 
 function runSuite(e, p) {
-    var check = new Check(e, p, build());
-    check.run();
+    // Important: To prevent Promise.all() from failing fast, we catch and
+    // return all errors. This ensures Promise.all() always resolves. We then
+    // iterate over all resolved values looking for errors. If we find one, we
+    // throw it so the whole build will fail.
+    //
+    // Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all#Promise.all_fail-fast_behaviour
+    //
+    // Note: as provided language string is used in job naming, it must consist
+    // of lowercase letters and hyphens only (per Brigade/K8s restrictions)
+    return Promise.all([
+        new Check(e, p, build()).run().catch((err) => { return err }),
+        new Check(e, p, audit()).run().catch((err) => { return err })
+    ]).then((values) => {
+        values.forEach((value) => {
+            if (value instanceof Error) throw value;
+        });
+    });
 }
 
 function publish(project, version) {
