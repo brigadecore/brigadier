@@ -1,2 +1,4 @@
 node_modules/
 out/
+.brigade/secrets.yaml
+.brigade/node_modules/
