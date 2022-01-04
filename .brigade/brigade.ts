@@ -2,25 +2,6 @@ import { ConcurrentGroup, events, Event, Job } from "@brigadecore/brigadier"
 
 const nodeImage = "node:12.22.7-bullseye"
 
-// FallibleJob is a Job that is allowed to fail without compelling the worker
-// process to fail.
-//
-// TODO: This will no longer be needed after
-// https://github.com/brigadecore/brigade/issues/1768 is addressed.
-class FallibleJob extends Job {
-  constructor(name: string, image: string, event: Event) {
-    super(name, image, event)
-  }
-  async run(): Promise<void> {
-    try {
-      await super.run()
-    } catch {
-      // Deliberately sweep any error under the rug
-    }
-    return Promise.resolve()
-  }
-}
-
 // A map of all jobs. When a check_run:rerequested event wants to re-run a
 // single job, this allows us to easily find that job by name.
 const jobs: { [key: string]: (event: Event) => Job } = {}
@@ -41,7 +22,7 @@ jobs[buildJobName] = buildJob
 
 const auditJobName = "audit"
 const auditJob = (event: Event) => {
-  const job = new FallibleJob(auditJobName, nodeImage, event)
+  const job = new Job(auditJobName, nodeImage, event)
   job.primaryContainer.sourceMountPath = "/src"
   job.primaryContainer.workingDirectory = "/src"
   job.primaryContainer.command = ["sh"]
@@ -49,6 +30,7 @@ const auditJob = (event: Event) => {
     "-c",
     "yarn install && yarn audit"
   ]
+  job.fallible = true
   return job
 }
 jobs[auditJobName] = auditJob
