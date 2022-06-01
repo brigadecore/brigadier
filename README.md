@@ -1,8 +1,8 @@
-> Note: This is the JS library for Brigade v1. For the Brigade v2-compatible
-> Brigadier JS/TS library, see the corresponding
-> [v2/brigadier](https://github.com/brigadecore/brigade/tree/v2/v2/brigadier)
-> directory in the main Brigade repository, or seek out the v2.x releases on
-> [Brigadier's npm site](https://www.npmjs.com/package/@brigadecore/brigadier).
+> ⚠️&nbsp;&nbsp;This repo contains the source for Brigadier v1.x, which is
+> compatible with Brigade v1.x. Brigade v1.x reached end-of-life on June 1,
+> 2022. Brigadier lives on as a Brigade v2.x-compatible library. Please refer to
+> the [main Brigade repository](https://github.com/brigadecore/brigade) to find
+> the latest Brigadier source code.
 
 # Brigadier: The JS library for Brigade
 
